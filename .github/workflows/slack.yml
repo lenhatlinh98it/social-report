@@ -1,0 +1,59 @@
+name: Social Report
+
+on:
+  schedule:
+    - cron: "30 1 * * *"  # 08:30 Asia/Ho_Chi_Minh (UTC+7)
+  workflow_dispatch:
+    inputs:
+      action:
+        type: choice
+        options: [report, refresh, channels]
+        default: report
+      response_url:
+        type: string
+        default: ""
+      text:
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  # channels: chạy tuần tự để commit channels.json không bị conflict
+  group: social-${{ inputs.action == 'channels' && 'channels' || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - run: pip install -r scripts/requirements.txt
+
+      - name: Run
+        env:
+          ACTION: ${{ github.event_name == 'schedule' && 'scheduled' || inputs.action }}
+          RESPONSE_URL: ${{ inputs.response_url }}
+          COMMAND_TEXT: ${{ inputs.text }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+        run: |
+          echo "::add-mask::$RESPONSE_URL"
+          python scripts/gh_runner.py "$ACTION"
+
+      - name: Commit channels.json
+        if: inputs.action == 'channels'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/channels.json
+          git diff --cached --quiet || { git commit -m "chore: update channels via /social-channels" && git push; }

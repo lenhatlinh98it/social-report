@@ -1,0 +1,6 @@
+.env
+logs/
+__pycache__/
+config/*.tmp
+worker/node_modules/
+worker/.wrangler/

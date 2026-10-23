@@ -1,0 +1,31 @@
+# Dán vào https://api.slack.com/apps → app Social Report → App Manifest
+# Thay WORKER_URL bằng URL của Cloudflare Worker (npx wrangler deploy in ra)
+display_information:
+  name: Social Report
+  description: Báo cáo stats YouTube/TikTok hằng ngày
+features:
+  bot_user:
+    display_name: Social Report
+    always_online: true
+  slash_commands:
+    - command: /social-report
+      url: https://WORKER_URL/
+      description: Fetch và gửi báo cáo social hôm qua
+      should_escape: false
+    - command: /social-channels
+      url: https://WORKER_URL/
+      description: Quản lý kênh YouTube/TikTok
+      usage_hint: list | add youtube|tiktok <url|@user> ["Tên"] | remove <tên>
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - commands
+      - chat:write
+settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://WORKER_URL/
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

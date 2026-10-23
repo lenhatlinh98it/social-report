@@ -1,0 +1,37 @@
+{
+  "timezone": "Asia/Ho_Chi_Minh",
+  "slack": {
+    "channel": "#daily-reports"
+  },
+  "youtube": {
+    "channels": [
+
+    ]
+  },
+  "tiktok": {
+    "rapidapi_host": "tiktok-scraper7.p.rapidapi.com",
+    "channels": [
+      {
+        "name": "TikTok US MundoAuto",
+        "username": "@mundoautostore"
+      },
+      {
+        "name": "TikTok US Leather",
+        "username": "@pxkleather"
+      },
+      {
+        "name": "TikTok JP Recipe",
+        "username": "@yukirecipe_jp"
+      },
+      {
+        "name": "TikTok JP Food",
+        "username": "@todoroki.san.car"
+      },
+      {
+        "name": "TikTok JP Tips",
+        "username": "@kawaya_tips"
+      }
+    ]
+  },
+  "schedule_time": "08:30"
+}

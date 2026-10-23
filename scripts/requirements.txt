@@ -1,0 +1,3 @@
+requests>=2.31.0
+pytz>=2024.1
+yt-dlp>=2024.1.0slack_bolt>=1.18.0
