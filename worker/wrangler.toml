@@ -4,7 +4,7 @@ compatibility_date = "2025-01-01"
 
 # Secrets (không ghi ở đây): npx wrangler secret put SLACK_SIGNING_SECRET / GITHUB_TOKEN
 [vars]
-GITHUB_REPO = "OWNER/REPO"      # TODO: đổi thành repo private của bạn
+GITHUB_REPO = "lenhatlinh98it/social-report"
 GITHUB_REF = "main"
 WORKFLOW_FILE = "slack.yml"
 ALLOWED_USER_IDS = ""           # Slack user ID được add/remove kênh, cách nhau bởi dấu phẩy
