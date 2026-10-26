@@ -57,3 +57,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add config/channels.json
           git diff --cached --quiet || { git commit -m "chore: update channels via /social-channels" && git push; }
+
+      - name: Notify Slack on failure
+        if: failure() && inputs.response_url != ''
+        env:
+          RESPONSE_URL: ${{ inputs.response_url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl -sS -X POST -H 'Content-Type: application/json' \
+            -d "{\"response_type\":\"ephemeral\",\"replace_original\":false,\"text\":\"❌ GitHub Actions thất bại. Xem log: $RUN_URL\"}" \
+            "$RESPONSE_URL"
